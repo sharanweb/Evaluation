@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cart</title>
+    
+    
+  </head>
+
+  <style>
+    #cart{
+        width: 98%;
+        margin: auto;
+        display: grid;
+        grid-template-columns: repeat(4,1fr);
+        gap: 10px;
+        
+      }
+      img{
+        width: 350px;
+      }
+      #displaybar{
+        width: 98%;
+        margin: auto;
+        background-color: wheat;
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 25px;
+      }
+      button{
+        width: 200px;
+        background-color: brown;
+        color: white;
+        font-weight: bolder;
+        
+      }
+      @media only screen and (min-width: 0px) and (max-width: 320px){
+        #menu{
+          grid-template-columns: repeat(1,1fr);
+        }
+      }
+      @media only screen and (min-width: 321px) and (max-width: 720px){
+        #menu{
+          grid-template-columns: repeat(2,1fr);
+        }
+      }
+
+
+  </style>
+
+  <body>
+    <div id="displaybar">
+
+      <h2 id="total">
+        <!--Show cart total ONLY here-->
+      </h2>
+      <button onclick="window.location.href = 'Checkout.html'">Proceed Checkout</button>
+
+    </div>
+    <div id="cart">
+      <!--Show dishes added to cart here-->
+      <!-- add an remove button to each dish so that you can remove that dish from cart, give it HTML id as 'remove' -->
+
+    </div>
+  </body>
+  <script>
+    var cart  = JSON.parse(localStorage.getItem("cart"));
+    
+    function calculateTotal(cart){
+      var total = cart.reduce(function(acc,curr){
+        return acc + curr.price;
+      },0)
+      var x = total;
+      console.log(x);
+      totalDisplay(x);
+
+    }
+    calculateTotal(cart);
+    
+
+    function totalDisplay(total){
+       totalDisplay = document.querySelector("#total");
+
+      totalDisplay.textContent = "Total Amount : "+ total + " ₹";
+
+      
+    }
+    
+    showItem();
+
+    function showItem(){
+      cart.map(function(elem,index){
+      let div = document.createElement("div");
+
+        let image = document.createElement("img");
+        image.setAttribute("src", elem.strMealThumb);
+
+        let name = document.createElement("h3");
+        name.textContent = elem.strMeal;
+
+        let price1 = document.createElement("p")
+        price1.textContent = "Price "+ elem.price;
+
+        let button = document.createElement("button");
+        button.textContent = "Delete";
+        button.addEventListener("click",function(){
+          deleteCart(cart,index)
+        })
+
+        div.append(image,name,price1,button);
+
+        document.querySelector("#cart").append(div);
+    });
+    }
+
+    function deleteCart(cart,index){
+      document.querySelector("#cart").innerHTML = "";
+      cart.splice(index,1);
+      localStorage.setItem("cart",JSON.stringify(cart));
+      
+      showItem(cart);
+    }
+
+  </script>
+    
+
+
+  
+
+</html>

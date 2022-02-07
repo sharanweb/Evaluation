@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Checkout</title>
+    
+    <style>
+      body{
+    display: flex;
+    display: grid;
+    grid-template-columns: repeat(2,1fr);
+    gap: 10px;
+  }
+  #order-form{
+    width: 40%;
+    
+    text-align: center;
+
+  }
+  
+  form>input{
+    width: 150px;
+    margin: auto;
+  }
+  @media only screen and (mini-width:0px) and (max-width: 320px){
+    body{
+      grid-template-columns: repeat(1,1fr);
+    }
+  }
+ img{
+   width: 400px;
+ }
+    </style>
+  </head>
+
+  <body>
+    <div id="order-form">
+      <form>
+        <p>Name</p>
+        <input id="name" placeholder="Enter Name">
+        <br>
+        <p>Mobile Number</p>
+        <input id="number" placeholder="Enter Mobile Number">
+        <br>
+        <p>Adress</p>
+        <textarea name="address" id="address" cols="20" rows="10"></textarea>
+        <br>
+        <input type="submit" placeholder="Submit">
+
+
+      </form>
+      <!--Add your form html element here-->
+      <!--In form, give #name,#number and #address as HTML id's to relevant input elements -->
+    </div>
+    <div id="show">
+
+    </div>
+  </body>
+  <script>
+    document.querySelector("form").addEventListener("click", readAdrress);
+
+function readAdrress(event){
+  event.preventDefault();
+  console.log("clicked");
+
+  document.querySelector("#address").value;
+  
+    setTimeout(function(){
+      alert("Your order is accepted");
+      
+      display();
+    },3000)
+  
+}
+function display(){
+ let image =  document.createElement("img");
+  image.setAttribute("src","https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTNj2ERbzGWa1FqCxxrQXDWtOWAcQI7nyknVg&usqp=CAU");
+
+  document.querySelector("#show").append(image);
+}
+    
+  </script>
+
+</html>

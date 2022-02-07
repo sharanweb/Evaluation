@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Home</title>
+    
+    <style>
+      #menu{
+    width: 96%;
+    margin: auto;
+    display: grid;
+    grid-template-columns: repeat(4,1fr);
+    gap: 10px;
+  }
+  img{
+    width: 350px;
+  }
+  #navbar{
+    background-color: whitesmoke;
+    display: flex;
+    flex-direction: row-reverse;
+    padding: 18px;
+    margin-bottom: 20px;
+  }
+  #navbar> *{
+    margin-left: 10px;
+    margin-right: 10px;
+  }
+  @media only screen and (min-width: 0px) and (max-width: 320px){
+    #menu{
+      grid-template-columns: repeat(1,1fr);
+    }
+  }
+  @media only screen and (min-width: 321px) and (max-width: 720px){
+    #menu{
+      grid-template-columns: repeat(2,1fr);
+    }
+  }
+    </style>
+    
+  </head>
+
+  <body>
+    <div id="navbar">
+      <div>Login</div>
+      <div>Signup</div>
+      <div onclick="window.location.href = 'index.html'">Menu</div>
+      <!--Add menu divs here-->
+      <div id="count"></div>
+      <a href="cart.html">Cart</a>
+    </div>
+
+    <div id="menu">
+
+      <!--Show indian dishes here in grid format-->
+      <!-- add an add to cart button to each dish, give it HTML id as 'addtocart' -->
+
+    </div>
+  </body>
+  <script >
+    var url = `https://www.themealdb.com/api/json/v1/1/filter.php?a=Indian`;
+
+async function getProducts(){
+  try{
+    var res = await fetch(url);
+    let data = await res.json();
+    let arr = data.meals;
+    
+
+    for(var i=0; i<arr.length; i++){
+      arr[i].price = Math.floor(Math.random()*500);
+    }
+    // console.log(arr);
+    showProducts(arr);
+    
+  }catch(err){
+    console.log(err);
+  }
+}
+getProducts();
+
+var cart = localStorage.getItem("cart");
+   if(!cart){
+  cart = [];
+  localStorage.setItem("cart",JSON.stringify(cart));
+  refreshCount(cart);
+}else{
+  cart = JSON.parse(cart);
+  refreshCount(cart);
+}
+
+function refreshCount(cart){
+  let cartCount = document.querySelector("#count");
+  cartCount.textContent = "Cart Items: " + cart.length;
+}
+
+function showProducts(arr){
+  arr.forEach(function(elem){
+    
+    let div = document.createElement("div");
+
+    let image = document.createElement("img");
+    image.setAttribute("src", elem.strMealThumb);
+
+    let name = document.createElement("h3");
+    name.textContent = elem.strMeal;
+
+    let price1 = document.createElement("p")
+    price1.textContent = "Price "+ elem.price;
+
+    let button = document.createElement("button");
+    button.setAttribute("id", "addtocart")
+    button.textContent = "Add To Cart";
+    button.onclick = function(event){
+      addToCart(elem);
+    }
+
+    div.append(image,name,price1,button);
+
+    document.querySelector("#menu").append(div);
+    
+  });
+
+  function addToCart(prod){
+    let cart  = JSON.parse(localStorage.getItem("cart"));
+    cart.push(prod);
+    localStorage.setItem("cart",JSON.stringify(cart));
+    refreshCount(cart);
+  }
+  
+
+}
+
+    
+    
+  </script>
+
+</html>
